@@ -3,16 +3,31 @@ html
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(href='/assets/css/main.css', rel='stylesheet')
     block meta
   body
     header
+      div(class='background')
       nav
         ul
           li
             a(href='/') Home
+          li
+            a(href='https://toolsadmin.wikimedia.org/tools/id/citation-js') Tool info
 
     main
       block content
 
     footer
-      p Lars Willighagen
+      div(class='background')
+
+      div
+        p
+          | Created by
+          |
+          a(href='https://larsgw.github.io/') Lars Willighagen
+
+        p
+          | Powered by
+          |
+          a(href='https://citation.js.org/') Citation.js

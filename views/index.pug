@@ -1,8 +1,32 @@
 extends layout
 
 block meta
-  title Home
-  meta(name='description', content=description)
+  title Citation.js
+  meta(name='description', content='Tool for Wikimedia Toolforge')
+  script(src='/assets/js/form.js')
 
 block content
-  h1 Hello, World!
+  header
+    h1 Citation.js Tool
+    p
+      | Export citations from Wikidata items and generate Quickstatements for
+      | publications not yet on Wikidata.
+
+  section
+    header
+      h2 Export citations
+
+    form(action='/api/v1/export/{id}/{format}', method='get')
+      label(for='id') Wikidata entity IDs
+      input(id='id', name='id', type='text')
+
+      label(for='format') Output format
+      select(id='format', name='format')
+        option(value='data') CSL-JSON
+        option(value='ndjson') CSL-NDJSON
+        option(value='bibtex') BibTeX
+        option(value='biblatex') BibLaTeX
+        option(value='bibtxt') BibTXT
+        option(value='ris') RIS
+
+      button Try it out!

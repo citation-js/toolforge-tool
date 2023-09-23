@@ -20,6 +20,9 @@ app.use('/api/v1', apiRouter)
 // Pages
 app.get('/', (_, res) => { res.render('index') })
 
+// Static
+app.use('/assets', express.static('assets'))
+
 // LISTEN
 // ======
 const PORT = process.env.PORT
