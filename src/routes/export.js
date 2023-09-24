@@ -2,6 +2,31 @@ const CITE = require('../citation.js')
 const express = require('express')
 
 // Option parsing
+const OPTION_TYPES = {
+    bibliography: {
+        asEntryArray: 'boolean',
+        nosort: 'boolean',
+        entry: 'json'
+    },
+    citation: {
+        entry: 'json'
+    }
+}
+
+function parseValue (value, type) {
+    if (type === 'boolean') {
+        return value === 'true'
+    } else if (type === 'json') {
+        try {
+            return JSON.parse(value)
+        } catch (e) {
+            return value
+        }
+    } else {
+        return value
+    }
+}
+
 function addOption (options, [key, ...path], value) {
     if (path.length === 0) {
         options[key] = value
@@ -12,11 +37,13 @@ function addOption (options, [key, ...path], value) {
     }
 }
 
-function createOptions (query) {
+function createOptions (query, format) {
+    const optionTypes = OPTION_TYPES[format] || {}
     const options = {}
     for (const param in query) {
         const path = param.split('.')
-        addOption(options, path, query[param])
+        const value = parseValue(query[param], optionTypes[param] || 'string')
+        addOption(options, path, value)
     }
     return options
 }
@@ -58,7 +85,7 @@ router.get('/:input/:format', ({ params: { input, format }, query }, response) =
         format = FORMAT_CSL[format]
     }
 
-    const options = createOptions(query)
+    const options = createOptions(query, format)
     return CITE.doExport(input, format, options)
         .then(output => {
             response.set('Content-Type', getContentType(format, options))
