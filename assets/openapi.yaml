@@ -15,7 +15,6 @@ externalDocs:
   url: https://citation.js.org/
 servers:
   - url: https://citation-js.toolforge.org/api/v1
-  - url: http://localhost:3144/api/v1
 tags:
   - name: Export
     description: Export bibliographical data for Wikidata entities
