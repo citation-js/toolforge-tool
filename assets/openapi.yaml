@@ -456,7 +456,7 @@ paths:
     get:
       tags:
         - QuickStatements
-      summary: Generate QuickStatements from a ISBN
+      summary: Generate QuickStatements from an ISBN
       operationId: quickstatementsIsbn
       parameters:
         - name: isbn
@@ -480,13 +480,13 @@ components:
       default: apa
       externalDocs:
         description: CSL citation styles
-        link: https://github.com/citation-style-language/styles
+        url: https://github.com/citation-style-language/styles
     CslLocale:
       type: string
       default: en-US
       externalDocs:
         description: CSL locale files
-        link: https://github.com/citation-style-language/locales
+        url: https://github.com/citation-style-language/locales
     CslFormat:
       type: string
       enum:
