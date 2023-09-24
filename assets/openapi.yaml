@@ -89,14 +89,14 @@ paths:
           required: false
           schema:
             type: boolean
-          example: true
+            default: false
         - name: nosort
           in: query
           description: Keep the reference list in order of input
           required: false
           schema:
             type: boolean
-          example: true
+            default: false
         - name: prepend
           in: query
           description: Prepend string to each reference
