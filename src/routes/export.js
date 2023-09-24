@@ -21,20 +21,17 @@ function createOptions (query) {
     return options
 }
 
-// Error handling
-const ERROR_STATUSES = {
-    [CITE.ERROR.INPUT_INVALID]: 415, // Not Acceptable
-    [CITE.ERROR.OUTPUT_INVALID]: 406, // Unsupported Media Type
-    [CITE.ERROR.UNKNOWN]: 500, // Internal Server Error
-}
-
 // Content-type
+const FORMAT_CSL = {
+    csljson: 'data',
+    cslndjson: 'ndjson'
+}
 const FORMAT_CONTENT_TYPES = {
     data: 'application/vnd.citationstyles.csl+json',
     ndjson: 'application/x-ndjson',
     bibtex: 'application/x-bibtex',
     biblatex: 'application/x-bibtex',
-    bibtxt: 'application/plain',
+    bibtxt: 'text/plain',
     ris: 'application/x-research-info-systems'
 }
 const CSL_FORMAT_CONTENT_TYPES = {
@@ -45,7 +42,11 @@ const CSL_FORMAT_CONTENT_TYPES = {
 }
 function getContentType (format, options) {
     if (format === 'bibliography' || format === 'citation') {
-        return CSL_FORMAT_CONTENT_TYPES[options.format || 'html']
+        if (options.asEntryArray) {
+            return 'application/json'
+        }
+
+        return CSL_FORMAT_CONTENT_TYPES[options.format] || CSL_FORMAT_CONTENT_TYPES.html
     }
     return FORMAT_CONTENT_TYPES[format]
 }
@@ -53,6 +54,10 @@ function getContentType (format, options) {
 // Routes
 const router = express.Router()
 router.get('/:input/:format', ({ params: { input, format }, query }, response) => {
+    if (format in FORMAT_CSL) {
+        format = FORMAT_CSL[format]
+    }
+
     const options = createOptions(query)
     return CITE.doExport(input, format, options)
         .then(output => {
@@ -60,7 +65,7 @@ router.get('/:input/:format', ({ params: { input, format }, query }, response) =
             response.send(output)
         })
         .catch(error => {
-            response.sendStatus(ERROR_STATUSES[error] || 500)
+            response.sendStatus(error instanceof CITE.CiteError ? error.getHttpStatus() : 500)
         })
 })
 

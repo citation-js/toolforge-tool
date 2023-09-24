@@ -17,6 +17,7 @@ app.set('view engine', 'pug')
 const apiRouter = express.Router()
 apiRouter.use(cors())
 apiRouter.use('/export', require('./routes/export.js'))
+apiRouter.use('/quickstatements', require('./routes/quickstatements.js'))
 app.use('/api/v1', apiRouter)
 
 // Pages
