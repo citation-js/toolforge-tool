@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Citation.js Toolforge - OpenAPI 3.0
   description: >-
-    Export citations from Wikidata items and generate Quickstatements for
+    Export citations from Wikidata items and generate QuickStatements for
     publications not yet
 
     on Wikidata.
