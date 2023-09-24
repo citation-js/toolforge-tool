@@ -1,5 +1,6 @@
 const Cite = require('@citation-js/core')
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 // SETUP
@@ -14,6 +15,7 @@ app.set('view engine', 'pug')
 
 // API
 const apiRouter = express.Router()
+apiRouter.use(cors())
 apiRouter.use('/export', require('./routes/export.js'))
 app.use('/api/v1', apiRouter)
 
