@@ -54,12 +54,12 @@ body > header nav ul {
   list-style-type: none;
 }
 
-main > header, section {
+body > main > header, body > main section {
   padding: 0.1em 1.5em;
   background: white;
 }
 
-section h2 {
+body > main section h2 {
   background-color: #333333;
   color: white;
   display: inline-block;
@@ -69,7 +69,7 @@ section h2 {
   text-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
 }
 
-section header {
+body > main section header {
   border-bottom: 1px solid #333333;
 }
 
@@ -82,48 +82,48 @@ body > footer .background {
   background-color: #111111;
 }
 
-.table-container {
+body > main .table-container {
   max-width: 100%;
   overflow-x: auto;
 }
 
-table {
+body > main table {
   border-collapse: collapse;
   width: 100%;
 }
 
-thead {
+body > main thead {
   color: #333333;
   background: #FFCA28;
 }
 
-tbody th {
+body > main tbody th {
   border-right: 1px solid #333;
 }
 
-tbody tr {
+body > main tbody tr {
   border-bottom: 1px solid #333;
 }
 
-table td, table th {
+body > main table td, body > main table th {
   padding: 0.5em;
 }
 
-blockquote {
+body > main blockquote {
   border-left: 3px solid #333;
   font-size: inherit;
   padding-left: 1em;
 }
 
-form {
+body > main form {
   padding: 0.5em 0;
 }
 
-fieldset {
+body > main fieldset {
   border: 3px solid #333;
 }
 
-input, select, button {
+body > main input, body > main select, body > main button {
   border: 1px solid black;
   display: block;
   font-size: 1em;
@@ -131,24 +131,24 @@ input, select, button {
   padding: 0.25em 0.5em;
 }
 
-input, select {
+body > main input, body > main select {
   background-color: #fff;
   max-width: 20em;
   width: 100%;
 }
 
-button {
+body > main button {
   color: #fff;
   background-color: #333;
   padding: 0.5em;
 }
 
-pre {
+body > main pre {
   max-width: 100%;
   overflow-x: auto;
 }
 
-a {
+body > header a, body > main a, body > footer a {
   border-bottom: 1px solid currentColor;
   color: inherit;
   text-decoration: none;
@@ -162,7 +162,7 @@ a:hover {
   opacity: 0.8;
 }
 
-.chip {
+body > main .chip {
   background-color: #eee;
   border-radius: 2em;
   display: inline-block;
@@ -171,18 +171,18 @@ a:hover {
   padding: 0 0.5em;
 }
 
-.chip img:first-child {
+body > main .chip img:first-child {
   margin-left: -0.5em;
   margin-right: 0;
   height: 2em;
   border-radius: 100%;
 }
 
-.chip * {
+body > main .chip * {
   margin: 0 0.5em;
   vertical-align: middle;
 }
 
-.material-icons {
+body > main .material-icons {
   vertical-align: middle;
 }

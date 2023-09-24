@@ -6,27 +6,12 @@ block meta
   script(src='/assets/js/form.js')
 
 block content
-  header
-    h1 Citation.js Tool
-    p
-      | Export citations from Wikidata items and generate Quickstatements for
-      | publications not yet on Wikidata.
-
-  section
+  main
     header
-      h2 Export citations
+      h1 Citation.js Tool
+      p
+        | Export citations from Wikidata items and generate Quickstatements for
+        | publications not yet on Wikidata.
 
-    form(action='/api/v1/export/{id}/{format}', method='get')
-      label(for='id') Wikidata entity IDs
-      input(id='id', name='id', type='text')
-
-      label(for='format') Output format
-      select(id='format', name='format')
-        option(value='data') CSL-JSON
-        option(value='ndjson') CSL-NDJSON
-        option(value='bibtex') BibTeX
-        option(value='biblatex') BibLaTeX
-        option(value='bibtxt') BibTXT
-        option(value='ris') RIS
-
-      button Try it out!
+    section
+      a(href='/openapi/') See the OpenAPI specification.

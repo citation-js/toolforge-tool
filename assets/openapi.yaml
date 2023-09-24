@@ -1,0 +1,496 @@
+openapi: 3.0.3
+info:
+  title: Citation.js Toolforge - OpenAPI 3.0
+  description: >-
+    Export citations from Wikidata items and generate Quickstatements for
+    publications not yet
+
+    on Wikidata.
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit/
+  version: 0.0.0
+externalDocs:
+  description: Find out more about Citation.js
+  url: https://citation.js.org/
+servers:
+  - url: https://citation-js.toolforge.org/api/v1
+  - url: http://localhost:3144/api/v1
+tags:
+  - name: Export
+    description: Export bibliographical data for Wikidata entities
+  - name: QuickStatements
+    description: Generate QuickStatements from bibliographical data
+    externalDocs:
+      description: Find out more about QuickStatements
+      url: https://quickstatements.toolforge.org/#/
+paths:
+  /export/{entityId}/biblatex:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to BibLaTeX
+      operationId: exportEntityBiblatex
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/x-bibtex: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/bibliography:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to a reference list
+      operationId: exportEntityBibliography
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+        - name: template
+          in: query
+          description: CSL style
+          required: false
+          schema:
+            $ref: '#/components/schemas/CslStyle'
+          example: vancouver
+        - name: lang
+          in: query
+          description: CSL locale
+          required: false
+          schema:
+            $ref: '#/components/schemas/CslLocale'
+          example: fr-FR
+        - name: format
+          in: query
+          description: Citeproc-js format
+          schema:
+            $ref: '#/components/schemas/CslFormat'
+          required: false
+          example: html
+        - name: asEntryArray
+          in: query
+          description: Return array of reference list entries
+          required: false
+          schema:
+            type: boolean
+          example: true
+        - name: nosort
+          in: query
+          description: Keep the reference list in order of input
+          required: false
+          schema:
+            type: boolean
+          example: true
+        - name: prepend
+          in: query
+          description: Prepend string to each reference
+          required: false
+          schema:
+            type: string
+        - name: append
+          in: query
+          description: Append string to each reference
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/html: {}
+            text/plain: {}
+            text/rtf: {}
+            application/x-latex: {}
+            application/json: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/bibtex:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to BibTeX
+      operationId: exportEntityBibtex
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/x-bibtex: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/bibtxt:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to Bib.TXT
+      operationId: exportEntityBibtxt
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/citation:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to an in-text citation
+      operationId: exportEntityCitation
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+        - name: template
+          in: query
+          description: CSL style
+          required: false
+          schema:
+            $ref: '#/components/schemas/CslStyle'
+          example: vancouver
+        - name: lang
+          in: query
+          description: CSL locale
+          required: false
+          schema:
+            $ref: '#/components/schemas/CslLocale'
+          example: fr-FR
+        - name: format
+          in: query
+          description: Citeproc-js format
+          schema:
+            $ref: '#/components/schemas/CslFormat'
+          required: false
+          example: html
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/html: {}
+            text/plain: {}
+            text/rtf: {}
+            application/x-latex: {}
+            application/json: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/csljson:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to CSL-JSON
+      operationId: exportEntityCslJson
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+        - name: version
+          in: query
+          description: CSL-JSON version
+          schema:
+            type: string
+            default: 1.0.2
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/vnd.citationstyles.csl+json: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/cslndjson:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to CDL-NDJSON
+      operationId: exportEntityCslNdjson
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+        - name: version
+          in: query
+          description: CSL-JSON version
+          schema:
+            type: string
+            default: 1.0.2
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/x-ndjson: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  /export/{entityId}/ris:
+    get:
+      tags:
+        - Export
+      summary: Export a Wikidata entity to RIS
+      operationId: exportEntityRis
+      parameters:
+        - name: entityId
+          in: path
+          description: Wikidata Entity ID
+          required: true
+          schema:
+            type: string
+          example: Q30000000
+        - name: spec
+          in: query
+          description: RIS specification
+          required: false
+          schema:
+            type: string
+            default: mixed
+            enum:
+              - mixed
+              - new
+              - old
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/x-research-info-systems: {}
+        '406':
+          description: Input not valid
+        '415':
+          description: Requested output format unknown
+  # QuickStatements
+  /quickstatements:
+    post:
+      tags:
+        - QuickStatements
+      summary: Generate QuickStatements from BibTeX/RIS input
+      operationId: quickstatements
+      requestBody:
+        required: true
+        content:
+          application/x-bibtex:
+            schema:
+              type: string
+              format: BibTeX or BibLaTeX
+            example: |-
+              @article{Miccadei2002Synergistic,
+                author = {Miccadei, Stefania and De Leo, Rossana and Zammarchi, Enrico and Natali, Pier Giorgio and Civitareale, Donato},
+                journaltitle = {Molecular Endocrinology},
+                doi = {10.1210/MEND.16.4.0808},
+                issn = {0888-8809},
+                number = {4},
+                date = {2002-04-01},
+                keywords = {transcription},
+                language = {en},
+                pages = {837--846},
+                eprint = {11923479},
+                eprinttype = {pubmed},
+                title = {The {Synergistic} {Activity} of {Thyroid} {Transcription} {Factor} 1 and {Pax} 8 {Relies} on the {Promoter}/{Enhancer} {Interplay}},
+                volume = {16},
+              }
+          application/vnd.citationstyles.csl+json:
+            schema:
+              type: string
+              format: CSL-JSON
+            example: |-
+              [
+                {
+                  "id": "Q30000000",
+                  "custom": {
+                    "QID": "Q30000000"
+                  },
+                  "source": "Wikidata",
+                  "author": [
+                    {
+                      "given": "Stefania",
+                      "family": "Miccadei",
+                      "_ordinal": 1
+                    },
+                    {
+                      "given": "Rossana",
+                      "family": "De Leo",
+                      "_ordinal": 2
+                    },
+                    {
+                      "given": "Enrico",
+                      "family": "Zammarchi",
+                      "_ordinal": 3
+                    },
+                    {
+                      "given": "Pier Giorgio",
+                      "family": "Natali",
+                      "_ordinal": 4
+                    },
+                    {
+                      "given": "Donato",
+                      "family": "Civitareale",
+                      "_ordinal": 5
+                    }
+                  ],
+                  "container-title": "Molecular Endocrinology",
+                  "DOI": "10.1210/MEND.16.4.0808",
+                  "ISSN": "0888-8809",
+                  "issue": "4",
+                  "issued": {
+                    "date-parts": [
+                      [
+                        2002,
+                        4,
+                        1
+                      ]
+                    ]
+                  },
+                  "keyword": "transcription",
+                  "language": "en",
+                  "page": "837-846",
+                  "PMID": "11923479",
+                  "title": "The Synergistic Activity of Thyroid Transcription Factor 1 and Pax 8 Relies on the Promoter/Enhancer Interplay",
+                  "type": "article-journal",
+                  "volume": "16"
+                }
+              ]
+          application/x-research-info-systems:
+            schema:
+              type: string
+              format: RIS
+            example: |-
+              TY  - JOUR
+              AU  - Miccadei, Stefania
+              AU  - De Leo, Rossana
+              AU  - Zammarchi, Enrico
+              AU  - Natali, Pier Giorgio
+              AU  - Civitareale, Donato
+              DA  - 2002/4/1/
+              DB  - Wikidata
+              DO  - 10.1210/MEND.16.4.0808
+              ID  - Q30000000
+              IS  - 4
+              KW  - transcription
+              LA  - en
+              SN  - 0888-8809
+              SP  - 837-846
+              T2  - Molecular Endocrinology
+              TI  - The Synergistic Activity of Thyroid Transcription Factor 1 and Pax 8 R
+              elies on the Promoter/Enhancer Interplay
+              VL  - 16
+              ER  -
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain: {}
+        '406':
+          description: Input not valid
+  /quickstatements/doi/{doi}:
+    get:
+      tags:
+        - QuickStatements
+      summary: Generate QuickStatements from a DOI
+      operationId: quickstatementsDoi
+      parameters:
+        - name: doi
+          in: path
+          description: Digital Object Identifier (DOI), escaped
+          required: true
+          schema:
+            type: string
+          example: '10.5281/zenodo.8242099'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain: {}
+        '406':
+          description: Input not valid
+  /quickstatements/isbn/{isbn}:
+    get:
+      tags:
+        - QuickStatements
+      summary: Generate QuickStatements from a ISBN
+      operationId: quickstatementsIsbn
+      parameters:
+        - name: isbn
+          in: path
+          description: ISBN
+          required: true
+          schema:
+            type: string
+          example: '978-3-030-67727-5'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            text/plain: {}
+        '406':
+          description: Input not valid
+components:
+  schemas:
+    CslStyle:
+      type: string
+      default: apa
+      externalDocs:
+        description: CSL citation styles
+        link: https://github.com/citation-style-language/styles
+    CslLocale:
+      type: string
+      default: en-US
+      externalDocs:
+        description: CSL locale files
+        link: https://github.com/citation-style-language/locales
+    CslFormat:
+      type: string
+      enum:
+        - html
+        - text
+        - rtf
+        - latex
