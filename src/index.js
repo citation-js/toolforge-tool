@@ -24,6 +24,11 @@ app.use('/api/v1', apiRouter)
 // Pages
 app.get('/', (_, res) => { res.render('index') })
 app.get('/openapi', (_, res) => { res.render('openapi') })
+app.get('/export', (req, res) => {
+  res.render('export', {
+    id: req.query.id
+  })
+})
 
 // Static
 app.use('/assets', express.static('assets'))
