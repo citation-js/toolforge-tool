@@ -6,11 +6,12 @@ Citation.js Tool for Wikimedia Toolforge. See documentation: https://citation-js
 
 Deploy changes (requires account, tool):
 
-```
-ssh -i <path-to-ssh-private-key> <shell-username>@login.toolforge.org
-become <tool-name>
+```sh
+ssh -i $path_to_ssh_private_key $shell_username@login.toolforge.org
+become $tool_name
 cd www/js
 git pull
+# npm install
 cd ../..
 webservice --backend=kubernetes node18 restart
 ```
