@@ -27,7 +27,7 @@ async function prepareFormatting (format, { template: style }) {
     const stylePath = path.resolve(STYLES_DIR, style + '.csl')
 
     if (path.dirname(stylePath) !== STYLES_DIR || !fs.existsSync(stylePath)) {
-        return
+        throw new CiteError(`Style "${style}" unavailable`, { code: CiteError.ERROR_OUTPUT_OPTION_INVALID })
     }
 
     styles.add(style, await fs.promises.readFile(stylePath, 'utf8'))
@@ -44,6 +44,7 @@ class CiteError extends Error {
         switch (this.code) {
             case CiteError.ERROR_INPUT_INVALID: return 415; // Not Acceptable
             case CiteError.ERROR_OUTPUT_INVALID: return 406; // Unsupported Media Type
+            case CiteError.ERROR_OUTPUT_OPTION_INVALID: return 400; // Bad Request
             case CiteError.ERROR_UNKNOWN: return 500; // Internal Server Error
             default: return 500; // Internal Server Error
         }
@@ -54,17 +55,18 @@ class CiteError extends Error {
 CiteError.ERROR_UNKNOWN = 0
 CiteError.ERROR_INPUT_INVALID = 1
 CiteError.ERROR_OUTPUT_INVALID = 2
+CiteError.ERROR_OUTPUT_OPTION_INVALID = 3
 
 // Functions
 const EXPORT_INPUT_TYPES = new Set(['@wikidata/id', '@wikidata/list+text'])
 async function doExport (input, format, options) {
     if (!Cite.plugins.output.has(format)) {
-        throw CiteError.ERROR_OUTPUT_INVALID
+        throw new CiteError(`Format "${format}" unavailable`, { code: CiteError.ERROR_OUTPUT_INVALID })
     }
 
     const inputType = Cite.plugins.input.type(input)
     if (!EXPORT_INPUT_TYPES.has(inputType)) {
-        throw CiteError.ERROR_INPUT_INVALID
+        throw new CiteError('Input not acceptable', { code: CiteError.ERROR_INPUT_INVALID })
     }
 
     try {
@@ -72,7 +74,11 @@ async function doExport (input, format, options) {
         await prepareFormatting(format, options)
         return data.format(format, options)
     } catch (e) {
-        throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
+        if (e instanceof CiteError) {
+            throw e
+        } else {
+            throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
+        }
     }
 }
 
@@ -84,7 +90,6 @@ async function doQuickstatementsExport (input, inputType) {
         })
         return data.format('quickstatements')
     } catch (e) {
-        console.error(e, input)
         throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
     }
 }

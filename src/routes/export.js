@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const CITE = require('../citation.js')
 const express = require('express')
 
@@ -92,7 +95,12 @@ router.get('/:input/:format', ({ params: { input, format }, query }, response) =
             response.send(output)
         })
         .catch(error => {
-            response.sendStatus(error instanceof CITE.CiteError ? error.getHttpStatus() : 500)
+            if (error instanceof CITE.CiteError) {
+                response.status(error.getHttpStatus())
+                response.send(error.message)
+            } else {
+                response.sendStatus(500)
+            }
         })
 })
 
