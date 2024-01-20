@@ -423,6 +423,10 @@ paths:
               elies on the Promoter/Enhancer Interplay
               VL  - 16
               ER  -
+          application/x-cff:
+            schema:
+              type: string
+              format: Citation File Format (YAML)
       responses:
         '200':
           description: Successful operation
