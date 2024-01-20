@@ -43,6 +43,7 @@ class CiteError extends Error {
     getHttpStatus () {
         switch (this.code) {
             case CiteError.ERROR_INPUT_INVALID: return 415; // Not Acceptable
+            case CiteError.ERROR_INPUT_NOT_FOUND: return 404; // Not Found
             case CiteError.ERROR_OUTPUT_INVALID: return 406; // Unsupported Media Type
             case CiteError.ERROR_OUTPUT_OPTION_INVALID: return 400; // Bad Request
             case CiteError.ERROR_UNKNOWN: return 500; // Internal Server Error
@@ -56,6 +57,7 @@ CiteError.ERROR_UNKNOWN = 0
 CiteError.ERROR_INPUT_INVALID = 1
 CiteError.ERROR_OUTPUT_INVALID = 2
 CiteError.ERROR_OUTPUT_OPTION_INVALID = 3
+CiteError.ERROR_INPUT_NOT_FOUND = 4
 
 // Functions
 const EXPORT_INPUT_TYPES = new Set(['@wikidata/id', '@wikidata/list+text'])
@@ -74,7 +76,9 @@ async function doExport (input, format, options) {
         await prepareFormatting(format, options)
         return data.format(format, options)
     } catch (e) {
-        if (e instanceof CiteError) {
+        if (e.message.match(/Entity ".+" not found/)) {
+            throw new CiteError(`Not Found: ${input}`, { code: CiteError.ERROR_INPUT_NOT_FOUND })
+        }if (e instanceof CiteError) {
             throw e
         } else {
             throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
@@ -90,7 +94,11 @@ async function doQuickstatementsExport (input, inputType) {
         })
         return data.format('quickstatements')
     } catch (e) {
-        throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
+        if (e.message.match(/Server responded with status code 404|Cannot find resource for ISBN/)) {
+            throw new CiteError(`Not Found: ${input}`, { code: CiteError.ERROR_INPUT_NOT_FOUND })
+        } else {
+            throw new CiteError('Export failed', { code: CiteError.ERROR_UNKNOWN })
+        }
     }
 }
 
