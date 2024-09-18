@@ -14,6 +14,7 @@ externalDocs:
   description: Find out more about Citation.js
   url: https://citation.js.org/
 servers:
+  - url: http://localhost:3144/api/v1
   - url: https://citation-js.toolforge.org/api/v1
 tags:
   - name: Export
@@ -320,7 +321,7 @@ paths:
           application/x-bibtex:
             schema:
               type: string
-              format: BibTeX or BibLaTeX
+              title: BibTeX or BibLaTeX
             example: |-
               @article{Miccadei2002Synergistic,
                 author = {Miccadei, Stefania and De Leo, Rossana and Zammarchi, Enrico and Natali, Pier Giorgio and Civitareale, Donato},
@@ -340,7 +341,7 @@ paths:
           application/vnd.citationstyles.csl+json:
             schema:
               type: string
-              format: CSL-JSON
+              title: CSL-JSON
             example: |-
               [
                 {
@@ -401,7 +402,7 @@ paths:
           application/x-research-info-systems:
             schema:
               type: string
-              format: RIS
+              title: RIS
             example: |-
               TY  - JOUR
               AU  - Miccadei, Stefania
@@ -426,7 +427,7 @@ paths:
           application/x-cff:
             schema:
               type: string
-              format: Citation File Format (YAML)
+              title: Citation File Format (YAML)
       responses:
         '200':
           description: Successful operation
