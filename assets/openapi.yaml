@@ -14,7 +14,6 @@ externalDocs:
   description: Find out more about Citation.js
   url: https://citation.js.org/
 servers:
-  - url: http://localhost:3144/api/v1
   - url: https://citation-js.toolforge.org/api/v1
 tags:
   - name: Export
