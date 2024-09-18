@@ -11,7 +11,6 @@ const CONTENT_TYPE_FORMATS = {
 
 // Routes
 const router = express.Router()
-router.use(express.text({ type: '*/*' }))
 
 router.post('/', (request, response) => {
     const inputType = CONTENT_TYPE_FORMATS[request.get('content-type')]

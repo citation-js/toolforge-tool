@@ -18,6 +18,7 @@ app.set('view engine', 'pug')
 
 // API
 const apiRouter = express.Router()
+apiRouter.use('/quickstatements', express.text({ type: '*/*' }))
 apiRouter.use(OpenApiValidator.middleware({ apiSpec: path.join(__dirname, '../assets/openapi.yaml') }))
 apiRouter.use(cors())
 apiRouter.use('/export', require('./routes/export.js'))
