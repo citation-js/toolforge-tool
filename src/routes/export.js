@@ -18,7 +18,7 @@ const OPTION_TYPES = {
 
 function parseValue (value, type) {
     if (type === 'boolean') {
-        return value === 'true'
+        return value === 'true' || value === true
     } else if (type === 'json') {
         try {
             return JSON.parse(value)
