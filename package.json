@@ -25,15 +25,15 @@
   },
   "homepage": "https://github.com/citation-js/toolforge-tool#readme",
   "dependencies": {
-    "@citation-js/core": "^0.8.2",
-    "@citation-js/plugin-bibtex": "^0.8.2",
-    "@citation-js/plugin-cff": "^0.6.1",
-    "@citation-js/plugin-csl": "^0.8.2",
-    "@citation-js/plugin-doi": "^0.8.2",
-    "@citation-js/plugin-isbn": "^0.4.0",
-    "@citation-js/plugin-quickstatements": "^0.6.0",
-    "@citation-js/plugin-ris": "^0.8.2",
-    "@citation-js/plugin-wikidata": "^0.8.2",
+    "@citation-js/core": "^0.9.0",
+    "@citation-js/plugin-bibtex": "^0.9.0",
+    "@citation-js/plugin-cff": "^0.7.3",
+    "@citation-js/plugin-csl": "^0.9.0",
+    "@citation-js/plugin-doi": "^0.9.0",
+    "@citation-js/plugin-isbn": "^0.5.0",
+    "@citation-js/plugin-quickstatements": "^0.7.1",
+    "@citation-js/plugin-ris": "^0.9.0",
+    "@citation-js/plugin-wikidata": "^0.9.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "express-openapi-validator": "^5.1.2",
@@ -42,6 +42,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   },
   "allowScripts": {
     "@scarf/scarf": false
